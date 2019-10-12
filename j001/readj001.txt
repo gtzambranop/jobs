@@ -1,0 +1,10 @@
+1) 	En un arreglo unidimencional se almacenan las calificaciones de 50 
+	estudiantes, calcular y mostrar el promedio general del grupo, el número
+	de alumnos aprobados (nota superior o igual a 3.0) y reprobados, porcentaje
+	de alumnos aprobados, reprobados y el nuúmero de alumnos cuya caificacion
+	es mayor a 4.0. Se debe mostrar el arreglo.
+2) 	Capturar en un arreglo unidimensional 30 números, escribir el arreglo, 
+	calcular y mostrar cuantos son positivos, negativos, nulos, pares e impares.
+3)	Elaborar un programa que capture 50 números enteros en un arreglo, escribir
+	el arreglo, el número mayor y cuantas veces se repite el mismo en el 
+	arreglo.

@@ -1,0 +1,27 @@
+j001	Tres problemas de arreglos unidimencionales en c++
+			1)	promedio de 50 estudiantes y clasificacion por notas
+			2)	camputar 30 numeros y describir cuantos son positivos, 
+				negativos, nulos, pares e impares.
+			3)	Programa que captura 50 números enteros, escribe el número
+				mayor y cuantas veces se repite.
+j002	Problema de arreglo bidimensional de temperaturas promedio semanales.
+		Se calculan temperaturas más altas y bajas, semanales y semestrales.
+j003	Problema de series de fourier programado en MATLAB para 4 estudiantes,
+		cada uno de manera diferente y para 5, 10, 20 e infinitas iteraciones.
+j004	3 problemas de series de fourier escaneados y 5 programados en MATLAB,
+		2 de ellos enviados ya resueltos, para 2 estudiantes, hay archivos
+		.zip que contienen el archivo .tex del documento de cada uno con 
+		5 ejercicios y sus respectivos códigos e imagenes de las graficas.
+		En los pdf se ven los problemas propuestos.
+j005	Dos problemas bidimensionales que consisten en:
+			1) 	Matriz 4x7 que representa un bus con lugares inhabilitados, 
+				donde deben ingresar y sacar pasajeros.
+			2)	Matriz 7x7 donde la sub-matriz 6x6 es llenada en espiral desde
+				el centro hacia afuera. y donde las últimas filas y columnas
+				contienen los promedios de cada fila y columna respectivamente.
+j006	Solucionar un examen cuyos temas a evaluar fueron:
+			-	Lógica digital				-	Compuertas lógicas
+			-	Leyes de Morgan				-	Mapas de Karnaugh
+			-	Decodificadores				-	Codificadores
+			-	Sumadores					-	Restadores
+			-	Multiplexores y conversor de código
