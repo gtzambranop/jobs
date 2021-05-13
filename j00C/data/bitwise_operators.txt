@@ -1,0 +1,6 @@
+&   tk_bit_and
+|   tk_bit_or
+^   tk_bit_xor
+~   tk_bit_not
+<<  tk_bit_shift_left
+>>  tk_bit_shift_right

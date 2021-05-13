@@ -1,0 +1,5 @@
+/	tk_div
++	tk_sum
+-	tk_res
+*	tk_mult
+%	tk_residue
