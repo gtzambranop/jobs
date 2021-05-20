@@ -1,6 +1,0 @@
-==  tk_is_equal_to
-!=  tk_not_equal_to
->   tk_greater_than
-<   tk_less_than
->=  tk_greater_equal_to
-<=  tk_less_equal_to

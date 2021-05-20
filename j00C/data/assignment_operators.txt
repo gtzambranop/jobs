@@ -1,6 +1,0 @@
-=	tk_igual
-+=  tk_sum_asign
--=  tk_res_asign
-*=  tk_mult_asign
-/=  tk_div_asign
-%=  tk_residue_asign

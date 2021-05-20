@@ -1,3 +1,0 @@
-&&  tk_log_and
-||  tk_log_or
-!   tk_log_not

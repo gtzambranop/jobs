@@ -1,0 +1,9 @@
+,	tk_comma
+:	tk_colon
+;	tk_sem_colon
+(	tk_left_rb
+)	tk_right_rb
+[	tk_left_sb
+]	tk_right_sb
+{	tk_left_key
+}	tk_right_key
