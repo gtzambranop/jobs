@@ -10,5 +10,5 @@
 2. Correr el ejecutable `main`.
 
   ```bash
-  ./main
+  ./main name_test_file.txt
   ```

@@ -1,17 +1,21 @@
-#include <bits/stdc++.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <regex>
 #include <map>
+#include <list>
+#include <regex>
+#include <string>
 #include <stdio.h>
-#include <stdio.h>
+#include <fstream>
 #include <dirent.h>
+#include <iostream>
 #include <sys/types.h>
-
-#define TEST "tests/a.txt"
+#include <bits/stdc++.h>
 
 using namespace std;
+
+/*
+map <string, string> test;
+test["Hello"] = "hola";
+cout << test["Hello"] << endl;
+*/
 
 map <string, string> mp_assig_op;
 map <string, string> mp_bit_op;
@@ -22,56 +26,59 @@ map <string, string> mp_rel_op;
 map <string, string> mp_reserved_w;
 map <string, string> mp_special_s;
 
-regex tk_num("((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?");
-regex tk_assig_op("(\\=|\\+=|\\-=|\\*=|\\/=|\\%=)");
+regex num("((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?");
+regex tk_assig_op("(\\=|\\+=|\\-=|\\*=|\\/=|\\%=|\\++|\\--)");
 regex tk_bit_op("(\\&|\\||\\^|\\~|\\<<|\\>>)");
 regex tk_log_op("(\\&&|\\|\\||\\!)");
 regex tk_mat_op("(\\/|\\+|\\-|\\*|\\%)");
 regex tk_puntuation("(\\,|\\:|\\;|\\[|\\]|\\{|\\}|\\(|\\))");
 regex tk_rel_op("(\\=\\=|\\!\\=|\\>|\\<|\\>\\=|\\<\\=)");
-regex tk_special_w("(\\#)");
+regex tk_special_s("(\\#)");
 regex ignore_line("(\\/\\*|\\*\\/|\\/\\/)");
 regex id("[a-zA-Z][a-zA-Z_0-9]*");
 
 const char* path_data = "./data/";
 const char* path_tests = "./tests/";
 
-string* tokenize(string s, string del = " ") {
-    string* tkns = new string[256];
+// separate the words of a string by a delimiter and add the fragments to a list
+list <string> tokenize(string s, string del = " ") {
+    list <string> tokens;
     int start = 0;
     int end = s.find(del);
     int count = 0;
 
     while (end != -1) {
-        tkns[count] =  s.substr(start, end - start);
+        tokens.push_back(s.substr(start, end - start));
         start = end + del.size();
         end = s.find(del, start);
         count++;
     }
-    tkns[count] = s.substr(start, end - start);
-    return tkns;
+    tokens.push_back(s.substr(start, end - start));
+    return tokens;
 }
 
+// Create the maps based on the files in the data directory
 void populate_dictionary(char * name_file, map <string, string> &mp) {
     string text;
-    string *tkns;
+    list <string> tokens;
 
     ifstream fl(name_file);
     if(name_file[7] == '6')
     {
         while (getline (fl, text)) {
-            tkns = tokenize(text, "\t");
-            mp[tkns[0]] = "";
+            tokens = tokenize(text, "\t");
+            mp[tokens.front()] = "reserved_w";
         }
     }else {
         while (getline (fl, text)) {
-            tkns = tokenize(text, "\t");
-            mp[tkns[0]] = tkns[1];
+            tokens = tokenize(text, "\t");
+            mp[tokens.front()] = tokens.back();
         }
     }
     fl.close();
 }
 
+// order to create the dictionaries
 void list_dir() {
     struct dirent *entry;
     DIR *dir = opendir(path_data);
@@ -127,68 +134,90 @@ void list_dir() {
     closedir(dir);
 }
 
-void analyze(string fragment, int position){
-    if(regex_match(&fragment[0], ignore_line)) {
-        cout << "IGNORAR" << endl;
+// print the tokens found in a table format
+void register_token(string token_name, string token, int position[]){
+    printf("%d \t %d \t %s \t\t %s\n", position[0], position[1], token_name.c_str(), token.c_str());
+}
+
+// filter each word of a line, in the different categories, be it tokens, +
+// numbers or identifiers
+void analyze(list <string> words, int position[]){
+    string temp_word,
+        token_name;
+    int word_length = 0;
+
+    if (!words.empty()) {
+        temp_word = words.front();
+        word_length = temp_word.length();
+        /*
+        if (regex_match(temp_word.substr(0, 1), tk_special_s)) {
+            words.pop_front();
+            words.push_front(temp_word.substr(1, word_length - 1));
+            words.push_front(temp_word.substr(0, 1));
+            temp_word = temp_word.substr(0, 1);
+            word_length = 1;
+            token_name = mp_special_s[temp_word];
+        }
+        */
+        if (regex_match(temp_word, tk_special_s)){
+            token_name = mp_special_s[temp_word];
+        } else if (mp_reserved_w.count(temp_word) > 0){
+            token_name = mp_reserved_w[temp_word];
+        } else if (regex_match(temp_word, id)){
+            token_name = "id\t";
+        } else if (regex_match(temp_word, num)){
+            token_name = "number";
+        } else if (regex_match(temp_word, tk_assig_op)){
+            token_name = mp_assig_op[temp_word];
+        } else if (regex_match(temp_word, tk_bit_op)){
+            token_name = mp_bit_op[temp_word];
+        } else if (regex_match(temp_word, tk_log_op)){
+            token_name = mp_log_op[temp_word];
+        } else if (regex_match(temp_word, tk_puntuation)){
+            token_name = mp_puntuation[temp_word];
+        } else if (regex_match(temp_word, tk_rel_op)){
+            token_name = mp_rel_op[temp_word];
+        } else if (regex_match(temp_word, tk_mat_op)){
+            token_name = mp_mat_op[temp_word];
+        }
+        if(!regex_match(temp_word, ignore_line)) {
+            if (temp_word != "") {
+                register_token(token_name, temp_word, position);
+            }
+            position[1] += word_length + 1;
+            words.pop_front();
+            analyze(words, position);
+        }
     }
 }
 
 int main(int argc, char const *argv[])
 {
     string line;
+    list <string> words;
     char* name_test_file = (char*)malloc(sizeof(char) * 256);
-    strcat(name_test_file, path_tests);
+    int position[2] = {1, 1};   // [line, column]
+
+    // argv[1] = name test file
     if(!argv[1]) {
         cout << "Execute as: ./main name_file_test.txt" << endl;
         return 0;
     }
+
+    strcat(name_test_file, path_tests);
     strcat(name_test_file, argv[1]);
-    cout << name_test_file << endl;
+
+    ifstream fl(name_test_file);
 
     list_dir();
-    cout << "PRUEBA" << endl;
-    int b = mp_bit_op.count("&");
-    cout << b << endl;
-
-    /*
-    ifstream fl(TEST);
+    printf("\nLine \tColumn \tName Token \t\t Token\n\n");
 
     while (getline (fl, line)) {
-        cout << line;
+        position[1] = 1;
+        words = tokenize(line, " ");
+        analyze(words, position);
+        position[0] ++;
     }
     fl.close();
-    /*
-    string* c;
-
-    string a = "Hi$%do$%you$%do$%!";
-    c = tokenize(a, "$%");
-
-    for (int i = 0; c[i] != ""; i++)
-    {
-        cout << c[i] << endl;
-    }
-    delete[] c;
-    */
-
-    /*
-    string input;
-
-    while(true)
-    {
-        cout<<"Enter the input: ";
-        cin>>input;
-        if(!cin) break;
-        //Exit when the user inputs q
-        if(input=="q")
-            break;
-        if(regex_match(input, tk_special_w))
-            cout<<"Input match"<<endl;
-        else
-        cout<<"Invalid input : Imput not match"<<endl;
-    }
-    */
-
-
-
     return 0;
 }
